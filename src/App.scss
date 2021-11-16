@@ -1,0 +1,36 @@
+.App {
+  background-color: blue;
+  width: 600px;
+  height: 600px;
+  display: flex;
+  flex-wrap: wrap;
+
+  .field {
+    border: 1px solid blue;
+    width: 200px;
+    height: 200px;
+    background-color: green;
+    position: relative;
+
+    .fieldValue {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .fieldEmpty {
+    background-color: red;
+    width: 200px;
+    height: 200px;
+    position: relative;
+
+    .fieldValue {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
