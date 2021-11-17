@@ -35,30 +35,24 @@ class Game {
     let arrayGame = [1, 2, 3, 4, 5, 6, 7, 8];
     shuffle(arrayGame);
 
-    console.log(arrayGame);
-    console.log("_________________________");
-
     let index = 0;
 
     for (let key in this) {
       this[key] = new Field(arrayGame[index]);
-      console.log(this[key]);
       index++;
     }
 
     this.six.freeMove = MOVE_VARIANT_DOWN;
-    this.eight.freeMove = MOVE_VARIANT_RIGHT;
-
-    console.log("---------------------");
-    console.log("---------------------");
+    this.eight.freeMove = MOVE_VARIANT_RIGHT; // может двигаться вправо
   }
 }
 
 function App() {
   let game = new Game();
-  console.log(game);
 
   let divArray = [];
+
+  let index = 0;
 
   for (let key in game) {
     divArray.push(
@@ -66,36 +60,54 @@ function App() {
         className="field"
         onClick={() => {
           switch (game[key].freeMove) {
-            case MOVE_VARIANT_NONE: {
+            case MOVE_VARIANT_NONE:
               window.alert("Нельзя переместить этот блок");
               break;
-            }
 
-            case MOVE_VARIANT_UP: {
+            case MOVE_VARIANT_UP:
               window.alert("вверх");
               break;
-            }
-            case MOVE_VARIANT_RIGHT: {
-              // продолжить здесь
-              // window.alert("вправо");
-              window.alert(JSON.stringify(game[key], null, 2));
+
+            case MOVE_VARIANT_RIGHT:
+              // двигаться вправо
+
+              switch (index) {
+                case 8:
+                  game.nine = game.eight;
+                  delete game.eight;
+                  game.nine.freeMove = MOVE_VARIANT_LEFT;
+
+                  let divEight = divArray[index - 1];
+                  divArray[index - 1] = divArray[index];
+                  divArray[index] = divEight;
+
+                  setStateDivs(divArray);
+                  break;
+
+                default:
+                  break;
+              }
               break;
-            }
-            case MOVE_VARIANT_DOWN: {
+
+            case MOVE_VARIANT_DOWN:
               window.alert("вниз");
               break;
-            }
-            case MOVE_VARIANT_LEFT: {
+
+            case MOVE_VARIANT_LEFT:
               window.alert("влево");
               break;
-            }
+
+            default:
+              break;
           }
         }}
-        key={(key + 1).toString()}
+        key={game[key].field.toString()}
       >
         <span className="fieldValue">{game[key].field}</span>
       </div>
     );
+
+    index++;
   }
 
   divArray.push(
@@ -108,8 +120,6 @@ function App() {
       <span className="fieldValue">Пусто</span>
     </div>
   );
-
-  console.log(divArray);
 
   const [stateDivs, setStateDivs] = useState(divArray);
 
